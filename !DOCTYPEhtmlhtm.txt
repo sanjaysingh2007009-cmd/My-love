@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Go On A Date With Me?</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffe6eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .image-container img {
+            width: 120px;
+            height: 120px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        h2 {
+            color: #8a2b43;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #8a2b43;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ffb3c6;
+            border-radius: 8px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            position: relative;
+            height: 50px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-yes {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        .btn-yes:hover {
+            background-color: #ff758f;
+        }
+
+        .btn-no {
+            background-color: #cccccc;
+            color: #333;
+            position: absolute;
+        }
+
+        .food-options {
+            display: grid;
+            grid-template-columns: repeat(3, 15px);
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .food-item {
+            border: 2px solid #ffb3c6;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            background: #fff5f7;
+            transition: 0.3s;
+        }
+
+        .food-item.selected {
+            background-color: #ff4d6d;
+            color: white;
+            border-color: #ff4d6d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        <!-- स्क्रीन 1: प्रपोजल -->
+        <div id="step1">
+            <div class="image-container">
+                <!-- यहाँ आप अपने किसी प्यारे डॉगी या अपनी फोटो का लिंक डाल सकते हैं -->
+                <img src="https://unsplash.com" alt="Cute Dog">
+            </div>
+            <h2>🌸 Will you go on a date with me? 🌸</h2>
+            <div class="btn-container">
+                <button class="btn-yes" onclick="nextStep(2)">YES ♥</button>
+                <button class="btn-no" id="noBtn">NO</button>
+            </div>
+        </div>
+
+        <!-- स्क्रीन 2: हैरान होने वाला रिएक्शन -->
+        <div id="step2" style="display: none;">
+            <div class="image-container">
+                <img src="https://unsplash.com" alt="Surprised">
+            </div>
+            <h2>WAIT YOU ACTUALLY SAID YES?? 😭</h2>
+            <p style="color: #666;">I was so ready for you to say no 😅</p>
+            <button class="btn-yes" onclick="nextStep(3)">okay okay! →</button>
+        </div>
+
+        <!-- स्क्रीन 3: तारीख और समय चुनना -->
+        <div id="step3" style="display: none;">
+            <h2>So... when are you free? 📅</h2>
+            <div class="input-group">
+                <label>Pick a Day 🗓️</label>
+                <input type="date" id="dateInput">
+            </div>
+            <div class="input-group">
+                <label>What Time? ⏰</label>
+                <select id="timeInput">
+                    <option>12:00 PM</option>
+                    <option>1:00 PM</option>
+                    <option>4:30 PM</option>
+                    <option>7:00 PM</option>
+                </select>
+            </div>
+            <button class="btn-yes" onclick="nextStep(4)" style="margin-top: 15px;">Next ♥</button>
+        </div>
+
+        <!-- स्क्रीन 4: खाने की पसंद -->
+        <div id="step4" style="display: none;">
+            <h2>What are we feeling? 🍕</h2>
+            <p style="color: #666;">pick your vibe</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;">
+                <button style="background:#fff5f7; color:#8a2b43; border: 1px solid #ffb3c6;" onclick="selectFood(this)">Pizza 🍕</button>
+                <button style="background:#fff5f7; color:#8a2b43; border: 1px solid #ffb3c6;" onclick="selectFood(this)">Sushi 🍣</button>
+                <button style="background:#fff5f7; color:#8a2b43; border: 1px solid #ffb3c6;" onclick="selectFood(this)">Burgers 🍔</button>
+                <button style="background:#fff5f7; color:#8a2b43; border: 1px solid #ffb3c6;" onclick="selectFood(this)">Pasta 🍝</button>
+            </div>
+            <button class="btn-yes" onclick="finish()">Done! ✨</button>
+        </div>
+    </div>
+
+    <script>
+        // No बटन को भगाने वाला लॉजिक
+        const noBtn = document.getElementById('noBtn');
+        
+        function moveNoButton() {
+            // स्क्रीन की चौड़ाई और ऊंचाई के हिसाब से रैंडम पोजीशन
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
+            
+            // बटन को कार्ड से बाहर पूरी स्क्रीन पर कहीं भी भेज देना
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        // माउस ले जाने पर (लैपटॉप के लिए)
+        noBtn.addEventListener('mouseover', moveNoButton);
+        // टच करने पर (मोबाइल के लिए)
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+
+        // स्क्रीन बदलने का फंक्शन
+        function nextStep(step) {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step3').style.display = 'none';
+            document.getElementById('step4').style.display = 'none';
+            
+            document.getElementById('step' + step).style.display = 'block';
+        }
+
+        // फ़ूड सेलेक्ट करने के लिए
+        function selectFood(btn) {
+            // पहले से सेलेक्टेड बटन का स्टाइल हटाना
+            const buttons = btn.parentElement.children;
+            for(let b of buttons) {
+                b.style.background = '#fff5f7';
+                b.style.color = '#8a2b43';
+            }
+            // नए बटन को सेलेक्ट करना
+            btn.style.background = '#ff4d6d';
+            btn.style.color = 'white';
+        }
+
+        // आख़िरी मैसेज
+        function finish() {
+            document.getElementById('mainCard').innerHTML = `
+                <h2 style="color: #ff4d6d;">Yayyy! It's a Date! ❤️</h2>
+                <p>सब कुछ सेट हो गया है, मिलते हैं! 🥰</p>
+            `;
+        }
+    </script>
+</body>
+</html>
